@@ -1,8 +1,8 @@
 import time
 import os
 from typing import Dict, Any, Optional, Generator
-from llama_cpp import Llama
 from src.core.llm_provider import LLMProvider
+
 
 class LocalProvider(LLMProvider):
     """
@@ -21,6 +21,9 @@ class LocalProvider(LLMProvider):
         
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model file not found at {model_path}. Please download it first.")
+
+        # Lazy import to prevent ModuleNotFoundError when importing this module
+        from llama_cpp import Llama
 
         # n_threads=None will use all available cores
         self.llm = Llama(
